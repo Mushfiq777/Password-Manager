@@ -3,10 +3,17 @@ from cryptography.fernet import Fernet
 import os
 width = os.get_terminal_size().columns
 def view():
+    with open("key.txt","rb") as e:
+        key = e.read()
+        fer = Fernet(key)
     with open("passwords.txt","r") as f:
         for line in f.readlines():
             line = line.strip()
             acc,username,pwd = line.split("|")
+            pwd = fer.decrypt(pwd.encode())
+            pwd = pwd.decode()
+            username = fer.decrypt(username.encode())
+            username = username.decode()
             adj = 40
             b1 = "%"*65
             print(b1.center(width))
@@ -19,9 +26,17 @@ def add():
     adj = 32
     acc = input("Enter Account name or website: ".center(width-adj).rstrip())
     user = input("Enter username of the account: ".center(width-adj).rstrip())
-    pwd = input("Enter the password of the account: ".center(width-29).rstrip())
+    pwd = input("Enter the password of the account: ".center(width-27).rstrip())
+    with open("key.txt","rb") as e:
+        key = e.read()
+        fer = Fernet(key)
+    pwd = fer.encrypt(pwd.encode())
+    user = fer.encrypt(user.encode())
+
+        
+    
     with open("passwords.txt","a") as f:
-        f.write(acc+"|"+user+"|"+pwd+"\n")
+        f.write(acc+"|"+user.decode()+"|"+pwd.decode()+"\n")
     
 def search():
     adj = 40
@@ -39,11 +54,18 @@ def search():
             print("Account(s) found!".center(width))
         else:
             print("No account found".center(width))
+    with open("key.txt","rb") as e:
+        key = e.read()
+        fer = Fernet(key)
     with open("passwords.txt","r") as f:
         for line in f.readlines():
             line = line.strip()
             acc,username,pwd = line.split("|")
             if acc_name==acc.lower():
+                pwd = fer.decrypt(pwd.encode())
+                pwd = pwd.decode()
+                username = fer.decrypt(username.encode())
+                username = username.decode()
                 print(b1.center(width))
                 print("Account:".center(width-adj).rstrip(),acc.center(width).lstrip())
                 print("Username:".center(width-adj).rstrip(),username.center(width).lstrip())

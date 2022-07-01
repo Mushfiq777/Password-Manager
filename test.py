@@ -1,0 +1,1 @@
+print(len("Do you want to view, add or search password(v/a/s) or quit(q):v"))

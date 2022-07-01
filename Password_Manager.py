@@ -1,5 +1,5 @@
 import textwrap
-from cryptography import fernet
+from cryptography.fernet import Fernet
 import os
 width = os.get_terminal_size().columns
 def view():
@@ -70,8 +70,22 @@ logo = (
 wrappedtext = textwrap.wrap(logo)
 for line in wrappedtext:
     print(line.center(width))
-
-# master_pwd = input("Enter master password: ")
+    
+while True:
+    with open("key.txt","rb") as e:
+        key = e.read()
+    with open("master.txt","rb") as f:
+        master = f.read()
+    fer = Fernet(key)
+    dec_master = fer.decrypt(master)
+    dec_master = dec_master.decode()
+    master_pwd = input("Enter master password: ".center(width).rstrip())
+    if master_pwd==dec_master:
+        print("Master password correct!".center(width))
+        break
+    else:
+        print("Incorrect master password Try again!".center(width))
+    
 
 options = ["v","a","s","q"]
 while True:

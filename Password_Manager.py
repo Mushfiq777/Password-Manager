@@ -97,7 +97,7 @@ def edit():
     count = 0
     adj = 40
     found = False
-    acc_edit = input("Enter the account you want to edit: ").lower()
+    acc_edit = input("Enter the account you want to edit: ".center(width).rstrip()).lower()
     with open("passwords.txt","r") as f:
         new_data = f.readlines()
         

@@ -36,7 +36,7 @@ def add():
             for line in f.readlines():
                 line = line.strip()
                 data = line.split("|")
-                if acc == data[0]:
+                if acc.lower() == data[0].lower():
                     
                     print("Account name already exist. Please try a different account name".center(width))
                     break
@@ -109,7 +109,7 @@ def edit():
             acc[1] = acc[1].decode()
             acc[2] = fer.decrypt(acc[2].encode())
             acc[2] = acc[2].decode()
-            if acc_edit==acc[0]:
+            if acc_edit==acc[0].lower():
                 print("Account found!".center(width))
                 found = True
                
@@ -218,7 +218,55 @@ def delete():
         else:
             print("Invalid Input Please Try Again".center(width).rstrip())
                   
-                              
+def sort():
+    with open("key.txt","rb") as e:
+        key = e.read()
+        fer = Fernet(key)
+    input1 = input("Do you want to sort in ascending order or descending order of account names?(a/d): ".center(width).rstrip()).lower()
+    
+    if input1=="a":
+        try:
+            with open("passwords.txt","r") as f:
+                data = f.readlines()
+                data = sorted(data,key=str.lower)
+                # print(data)
+                for i in data:
+                    acc,username,pwd = i.split("|")
+                    username = fer.decrypt(username.encode())
+                    username = username.decode()
+                    pwd = fer.decrypt(pwd.encode())
+                    pwd = pwd.decode()
+                    adj = 40
+                    print(b1.center(width))
+                    print("Account:".center(width-adj).rstrip(),acc.center(width).lstrip())
+                    print("Username:".center(width-adj).rstrip(),username.center(width).lstrip())
+                    print("Password:".center(width-adj).rstrip(),pwd.center(width).lstrip())
+                print(b1.center(width))
+         
+        except:
+            print("No record in the database.".center(width)) 
+    elif input1=="d":
+        try:
+            with open("passwords.txt","r") as f:
+                data = f.readlines()
+                
+                data = sorted(data,key=str.lower,reverse=True)
+                for i in data:
+                    acc,username,pwd = i.split("|")
+                    username = fer.decrypt(username.encode())
+                    username = username.decode()
+                    pwd = fer.decrypt(pwd.encode())
+                    pwd = pwd.decode()
+                    adj = 40
+                    print(b1.center(width))
+                    print("Account:".center(width-adj).rstrip(),acc.center(width).lstrip())
+                    print("Username:".center(width-adj).rstrip(),username.center(width).lstrip())
+                    print("Password:".center(width-adj).rstrip(),pwd.center(width).lstrip())
+                print(b1.center(width))
+         
+        except:
+            print("No record in the database.".center(width))     
+                                 
 logo = (
 "██████╗░░█████╗░░██████╗░██████╗░██╗░░░░░░░██╗░█████╗░██████╗░██████╗░\n"+
 "██╔══██╗██╔══██╗██╔════╝██╔════╝░██║░░██╗░░██║██╔══██╗██╔══██╗██╔══██╗\n"+
@@ -237,7 +285,7 @@ logo = (
 wrappedtext = textwrap.wrap(logo)
 for line in wrappedtext:
     print(line.center(width))
-
+    
 while True:
     with open("key.txt","rb") as e:
         key = e.read()
@@ -253,9 +301,9 @@ while True:
     else:
         print("Incorrect master password Try again!".center(width))
     
-options = ["v","a","s","q","e","d"]
+options = ["v","a","s","q","e","d","st"]
 while True:
-    ask = input("Do you want to view, add, edit, delete or search password(v/a/e/d/s) or quit(q): ".center(width).rstrip()).lower()
+    ask = input("Do you want to view, add, edit, delete, sort or search password(v/a/e/d/st/s) or quit(q): ".center(width).rstrip()).lower()
     if ask in options:
         if ask == "v":
             view()
@@ -266,7 +314,9 @@ while True:
         elif ask=="e":
             edit()
         elif ask=="d":
-            delete()    
+            delete() 
+        elif ask=="st":
+            sort()   
         else:
             print("You have exited the password manager..".center(width))
             break

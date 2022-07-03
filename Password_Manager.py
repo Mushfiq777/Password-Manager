@@ -112,17 +112,7 @@ def edit():
             if acc_edit==acc[0]:
                 print("Account found!")
                 found = True
-                # username = acc[1]
-                # pwd = acc[2]
-                
-                # pwd = fer.decrypt(pwd.encode())
-                # pwd = pwd.decode()
-                # username = fer.decrypt(username.encode())
-                # username = username.decode()
-                # acc[1] = fer.decrypt(acc[1].encode())
-                # acc[1] = acc[1].decode()
-                # acc[2] = fer.decrypt(acc[2].encode())
-                # acc[2] = acc[2].decode()
+               
                 print(b1.center(width))
                 print("Account:".center(width-adj).rstrip(),acc[0].center(width).lstrip())
                 print("Username:".center(width-adj).rstrip(),acc[1].center(width).lstrip())
@@ -144,9 +134,7 @@ def edit():
                         break
                     else:
                         print("Invalid input Please try again".center(width))
-                # with open("key.txt","rb") as e:
-                #     key = e.read()
-                #     fer = Fernet(key)
+                
                 acc[1] = fer.encrypt(acc[1].encode())
                 acc[2] = fer.encrypt(acc[2].encode())
                 acc[1] = acc[1].decode()
@@ -160,12 +148,7 @@ def edit():
                 acc[2] = acc[2].decode()
                 new = "|".join(acc)
                 data.append(new)
-                # acc[1] = fer.encrypt(user.encode())
-                # acc[2] = fer.encrypt(passw.encode())
-                # acc[1] = acc[1].decode()
-                # acc[2] = acc[2].decode()
-                # new = "|".join(acc)
-                # data.append(new)
+                
     if found==False:
         print("No account found by the name.".center(width))
     with open("passwords.txt","w") as p:

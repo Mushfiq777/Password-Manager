@@ -11,7 +11,7 @@ def view():
         with open("passwords.txt","r") as f:
             for line in f.readlines():
                 line = line.strip()
-                acc,username,pwd = line.split("|")
+                acc,username,pwd = line.split(",")
                 pwd = fer.decrypt(pwd.encode())
                 pwd = pwd.decode()
                 username = fer.decrypt(username.encode())
@@ -35,7 +35,7 @@ def add():
         with open("passwords.txt","r") as f:
             for line in f.readlines():
                 line = line.strip()
-                data = line.split("|")
+                data = line.split(",")
                 if acc.lower() == data[0].lower():
                     
                     print("Account name already exist. Please try a different account name".center(width))
@@ -52,7 +52,7 @@ def add():
     user = fer.encrypt(user.encode())
 
     with open("passwords.txt","a") as f:
-        f.write(acc+"|"+user.decode()+"|"+pwd.decode()+"\n")
+        f.write(acc+","+user.decode()+","+pwd.decode()+"\n")
     
 def search():
     adj = 40
@@ -62,7 +62,7 @@ def search():
         count = 0
         for line in f.readlines():
             line = line.strip()
-            acc,username,pwd = line.split("|")
+            acc,username,pwd = line.split(",")
             if acc_name==acc.lower():
                 count+=1
 
@@ -76,7 +76,7 @@ def search():
     with open("passwords.txt","r") as f:
         for line in f.readlines():
             line = line.strip()
-            acc,username,pwd = line.split("|")
+            acc,username,pwd = line.split(",")
             if acc_name==acc.lower():
                 pwd = fer.decrypt(pwd.encode())
                 pwd = pwd.decode()
@@ -104,7 +104,7 @@ def edit():
     with open("passwords.txt","r") as f:
         data = []
         for i in range(len(new_data)):
-            acc = new_data[i].split("|")
+            acc = new_data[i].split(",")
             acc[1] = fer.decrypt(acc[1].encode())
             acc[1] = acc[1].decode()
             acc[2] = fer.decrypt(acc[2].encode())
@@ -138,14 +138,14 @@ def edit():
                 acc[2] = fer.encrypt(acc[2].encode())
                 acc[1] = acc[1].decode()
                 acc[2] = acc[2].decode()
-                new = "|".join(acc)
+                new = ",".join(acc)
                 data.append(new)
             else:
                 acc[1] = fer.encrypt(acc[1].encode())
                 acc[2] = fer.encrypt(acc[2].encode())
                 acc[1] = acc[1].decode()
                 acc[2] = acc[2].decode()
-                new = "|".join(acc)
+                new = ",".join(acc)
                 data.append(new)
                 
     if found==False:
@@ -168,7 +168,7 @@ def delete_s():
     with open("passwords.txt","r") as d:
         for line in d.readlines():
             linestripped = line.strip()
-            l = linestripped.split("|")
+            l = linestripped.split(",")
             pwd = fer.decrypt(l[2].encode())
             pwd = pwd.decode()
             username = fer.decrypt(l[1].encode())
@@ -231,7 +231,7 @@ def sort():
                 data = sorted(data,key=str.lower)
                 # print(data)
                 for i in data:
-                    acc,username,pwd = i.split("|")
+                    acc,username,pwd = i.split(",")
                     username = fer.decrypt(username.encode())
                     username = username.decode()
                     pwd = fer.decrypt(pwd.encode())
@@ -252,7 +252,7 @@ def sort():
                 
                 data = sorted(data,key=str.lower,reverse=True)
                 for i in data:
-                    acc,username,pwd = i.split("|")
+                    acc,username,pwd = i.split(",")
                     username = fer.decrypt(username.encode())
                     username = username.decode()
                     pwd = fer.decrypt(pwd.encode())

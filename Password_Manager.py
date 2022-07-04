@@ -279,7 +279,33 @@ def export_csv():
         print("Export successful".center(width))
     except:
         print("Export uncsuccessful- Check if file with the same name and directory is open or being used by another service".center(width))    
-                                
+
+def edit_master():
+    with open("key.txt","rb") as e:
+        key = e.read()
+        fer = Fernet(key)
+    while True:
+        input1 = input("Enter your new master password: ".center(width).rstrip())
+        input2 = input("Re-confirm new master password: ".center(width).rstrip())
+        if input1==input2:
+            print("Password matched!".center(width))
+            break
+        else:
+            print("Passwords did not match please try again".center(width))
+        
+    while True:
+        sure = input("Are you sure you want to change the master password?(y/n): ".center(width).rstrip()).lower()
+        if sure=="y":
+            input1 = fer.encrypt(input1.encode()) 
+            with open("master.txt","wb") as m:
+                m.write(input1)
+                print("Master password changed successfully!".center(width))
+                break
+        elif sure=="n":    
+            print("Master password remained unchanged".center(width))
+            break
+        else:
+            print("Invalid Input Please Try Again".center(width))                    
 logo = (
 "██████╗░░█████╗░░██████╗░██████╗░██╗░░░░░░░██╗░█████╗░██████╗░██████╗░\n"+
 "██╔══██╗██╔══██╗██╔════╝██╔════╝░██║░░██╗░░██║██╔══██╗██╔══██╗██╔══██╗\n"+
@@ -330,7 +356,9 @@ while True:
             sep="\n")
     ask = input("Enter your choice: ".center(width-3).rstrip()).lower()
     if ask in options:
-        if ask == "2":
+        if ask=="1":
+            edit_master()
+        elif ask == "2":
             view()
         elif ask=="3":
             add()

@@ -3,7 +3,8 @@ import textwrap
 from cryptography.fernet import Fernet
 import os
 width = os.get_terminal_size().columns
-b1 = "%"*65
+b1 = "%"*65 #settting the border for viewing accounts
+#function to view all the accounts
 def view():
     with open("key.txt","rb") as e:
         key = e.read()
@@ -26,7 +27,7 @@ def view():
             print(b1.center(width))
     except:
         print("No records stored in the database".center(width))
-
+#function to add accounts
 def add():        
     adj = 32
     found = True
@@ -53,7 +54,7 @@ def add():
     user = fer.encrypt(user.encode())
     with open("passwords.txt","a") as f:
         f.write(acc+","+user.decode()+","+pwd.decode()+"\n")
-    
+#function to search account    
 def search():
     adj = 40
     b1 = "%"*65
@@ -87,7 +88,7 @@ def search():
                 print("Password:".center(width-adj).rstrip(),pwd.center(width).lstrip())              
         if count != 0:
             print(b1.center(width))
-            
+#function to edit account            
 def edit():
     with open("key.txt","rb") as e:
         key = e.read()
@@ -147,11 +148,11 @@ def edit():
     with open("passwords.txt","w") as p:
         for i in data:
             p.write(i+"\n") 
-            
+#function to delete all account           
 def delete_all():
     open("passwords.txt","w").close()
     print("All records deleted successfully".center(width))
-
+#function to delete a specific account
 def delete_s():
     with open("key.txt","rb") as e:
         key = e.read()
@@ -194,7 +195,7 @@ def delete_s():
     with open("passwords.txt","w") as p:
         for i in newdata:
             p.write(i+"\n")
-          
+#function for delete menu          
 def delete():
     while True:        
         input1 = input("Do you want to delete all records or a specifc one?(a/s): ".center(width).rstrip()).lower()
@@ -206,7 +207,7 @@ def delete():
             break
         else:
             print("Invalid Input Please Try Again".center(width).rstrip())
-                  
+#function to sort accounts                 
 def sort():
     with open("key.txt","rb") as e:
         key = e.read()
@@ -252,7 +253,7 @@ def sort():
                 print(b1.center(width))         
         except:
             print("No record in the database.".center(width))
-            
+#function to export to a .csv file            
 def export_csv():
     with open("key.txt","rb") as e:
         key = e.read()
@@ -279,7 +280,7 @@ def export_csv():
         print("Export successful".center(width))
     except:
         print("Export uncsuccessful- Check if file with the same name and directory is open or being used by another service".center(width))    
-
+#function to edit the master password
 def edit_master():
     with open("key.txt","rb") as e:
         key = e.read()
@@ -377,4 +378,3 @@ while True:
             break
     else:
         print("Invalid input please try again".center(width).rstrip())    
-        continue

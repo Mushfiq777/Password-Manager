@@ -54,6 +54,7 @@ def add():
     user = fer.encrypt(user.encode())
     with open("passwords.txt","a") as f:
         f.write(acc+","+user.decode()+","+pwd.decode()+"\n")
+        print("Account added successfully".center(width))
 #function to search account    
 def search():
     adj = 40

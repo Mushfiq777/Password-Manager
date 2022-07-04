@@ -1,3 +1,4 @@
+import csv
 import textwrap
 from cryptography.fernet import Fernet
 import os
@@ -265,7 +266,36 @@ def sort():
                 print(b1.center(width))
          
         except:
-            print("No record in the database.".center(width))     
+            print("No record in the database.".center(width))
+            
+def export_csv():
+    with open("key.txt","rb") as e:
+        key = e.read()
+        fer = Fernet(key)
+    save_path = input("Enter the path of the folder you want to export to:".center(width).rstrip())
+    file_name = "Accounts_passwords.csv"
+    completename= os.path.join(save_path,file_name)
+    header = ["Account","Username","Password"]
+    with open("passwords.txt","r") as p:
+        data = []
+        for line in p.readlines():
+            # l = []
+            line = line.strip()
+            line = line.split(",")
+            line[1] = fer.decrypt(line[1].encode())
+            line[1]=line[1].decode()
+            line[2] = fer.decrypt(line[2].encode())
+            line[2]=line[2].decode()
+            data.append(line)
+    try:       
+        with open(completename,"w",newline="") as c:
+            writer = csv.writer(c)
+            writer.writerow(header)
+            writer.writerows(data)
+        print("Export successful".center(width))
+    except:
+        print("Export uncsuccessful- Check if file with the same name and directory is open or being used by another service".center(width))    
+       
                                  
 logo = (
 "██████╗░░█████╗░░██████╗░██████╗░██╗░░░░░░░██╗░█████╗░██████╗░██████╗░\n"+
@@ -285,7 +315,7 @@ logo = (
 wrappedtext = textwrap.wrap(logo)
 for line in wrappedtext:
     print(line.center(width))
-    
+# export_csv()   
 while True:
     with open("key.txt","rb") as e:
         key = e.read()
@@ -301,22 +331,37 @@ while True:
     else:
         print("Incorrect master password Try again!".center(width))
     
-options = ["v","a","s","q","e","d","st"]
+options = ["1","2","3","4","5","6","7","8","9"]
 while True:
-    ask = input("Do you want to view, add, edit, delete, sort or search password(v/a/e/d/st/s) or quit(q): ".center(width).rstrip()).lower()
+
+    t1 = "1.Edit master password"
+    t2 = "2.view       6.sort"
+    t3 = "3.add        7.search"
+    t4=  "4.edit       8.export"
+    t5 = "5.delete     9.quit"
+    print("Main menu:".center(width),
+            t1.center(width+len(t1)-24).rstrip() ,
+            t2.center(width+len(t2)-22).rstrip(),
+            t3.center(width+len(t3)-22).rstrip(),
+            t4.center(width+len(t4)-22).rstrip(),
+            t5.center(width+len(t5)-22).rstrip(),
+            sep="\n")
+    ask = input("Enter your choice: ".center(width-3).rstrip()).lower()
     if ask in options:
-        if ask == "v":
+        if ask == "2":
             view()
-        elif ask=="a":
+        elif ask=="3":
             add()
-        elif ask=="s":
-            search()
-        elif ask=="e":
+        elif ask=="4":
             edit()
-        elif ask=="d":
-            delete() 
-        elif ask=="st":
-            sort()   
+        elif ask=="5":
+            delete()
+        elif ask=="6":
+            sort() 
+        elif ask=="7":
+            search()
+        elif ask=="8":
+            export_csv()   
         else:
             print("You have exited the password manager..".center(width))
             break

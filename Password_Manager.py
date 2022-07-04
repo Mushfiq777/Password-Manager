@@ -378,4 +378,3 @@ while True:
             break
     else:
         print("Invalid input please try again".center(width).rstrip())  
-input("Press anything to close")  

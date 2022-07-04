@@ -51,7 +51,6 @@ def add():
         fer = Fernet(key)
     pwd = fer.encrypt(pwd.encode())
     user = fer.encrypt(user.encode())
-
     with open("passwords.txt","a") as f:
         f.write(acc+","+user.decode()+","+pwd.decode()+"\n")
     
@@ -66,7 +65,6 @@ def search():
             acc,username,pwd = line.split(",")
             if acc_name==acc.lower():
                 count+=1
-
         if count != 0:
             print("Account found!".center(width))
         else:
@@ -86,8 +84,7 @@ def search():
                 print(b1.center(width))
                 print("Account:".center(width-adj).rstrip(),acc.center(width).lstrip())
                 print("Username:".center(width-adj).rstrip(),username.center(width).lstrip())
-                print("Password:".center(width-adj).rstrip(),pwd.center(width).lstrip())
-                
+                print("Password:".center(width-adj).rstrip(),pwd.center(width).lstrip())              
         if count != 0:
             print(b1.center(width))
             
@@ -100,8 +97,7 @@ def edit():
     found = False
     acc_edit = input("Enter the account you want to edit: ".center(width).rstrip()).lower()
     with open("passwords.txt","r") as f:
-        new_data = f.readlines()
-        
+        new_data = f.readlines()     
     with open("passwords.txt","r") as f:
         data = []
         for i in range(len(new_data)):
@@ -113,7 +109,6 @@ def edit():
             if acc_edit==acc[0].lower():
                 print("Account found!".center(width))
                 found = True
-               
                 print(b1.center(width))
                 print("Account:".center(width-adj).rstrip(),acc[0].center(width).lstrip())
                 print("Username:".center(width-adj).rstrip(),acc[1].center(width).lstrip())
@@ -133,8 +128,7 @@ def edit():
                         acc[2] = new_password
                         break
                     else:
-                        print("Invalid input Please try again".center(width))
-                
+                        print("Invalid input Please try again".center(width))              
                 acc[1] = fer.encrypt(acc[1].encode())
                 acc[2] = fer.encrypt(acc[2].encode())
                 acc[1] = acc[1].decode()
@@ -147,8 +141,7 @@ def edit():
                 acc[1] = acc[1].decode()
                 acc[2] = acc[2].decode()
                 new = ",".join(acc)
-                data.append(new)
-                
+                data.append(new)                
     if found==False:
         print("No account found by the name.".center(width))
     with open("passwords.txt","w") as p:
@@ -174,8 +167,7 @@ def delete_s():
             pwd = pwd.decode()
             username = fer.decrypt(l[1].encode())
             username = username.decode()
-            adj = 40
-            
+            adj = 40            
             if acc_d == l[0]:
                 found = True
                 print("Account found!".center(width))
@@ -184,8 +176,7 @@ def delete_s():
                 print("Username:".center(width-adj).rstrip(),username.center(width).lstrip())
                 print("Password:".center(width-adj).rstrip(),pwd.center(width).lstrip())
                 print(b1.center(width))
-                while True:
-                    
+                while True:                    
                     input1 = input("Are you sure you want to delete?(y/n): ".center(width).rstrip()).lower()
                     if input1=="y":
                         print("Account deleted successfully!".center(width))
@@ -203,12 +194,9 @@ def delete_s():
     with open("passwords.txt","w") as p:
         for i in newdata:
             p.write(i+"\n")
-    
-            
-            
+          
 def delete():
-    while True:
-        
+    while True:        
         input1 = input("Do you want to delete all records or a specifc one?(a/s): ".center(width).rstrip()).lower()
         if input1=="a":
             delete_all()
@@ -242,15 +230,13 @@ def sort():
                     print("Account:".center(width-adj).rstrip(),acc.center(width).lstrip())
                     print("Username:".center(width-adj).rstrip(),username.center(width).lstrip())
                     print("Password:".center(width-adj).rstrip(),pwd.center(width).lstrip())
-                print(b1.center(width))
-         
+                print(b1.center(width))         
         except:
             print("No record in the database.".center(width)) 
     elif input1=="d":
         try:
             with open("passwords.txt","r") as f:
-                data = f.readlines()
-                
+                data = f.readlines()                
                 data = sorted(data,key=str.lower,reverse=True)
                 for i in data:
                     acc,username,pwd = i.split(",")
@@ -263,8 +249,7 @@ def sort():
                     print("Account:".center(width-adj).rstrip(),acc.center(width).lstrip())
                     print("Username:".center(width-adj).rstrip(),username.center(width).lstrip())
                     print("Password:".center(width-adj).rstrip(),pwd.center(width).lstrip())
-                print(b1.center(width))
-         
+                print(b1.center(width))         
         except:
             print("No record in the database.".center(width))
             
@@ -279,7 +264,6 @@ def export_csv():
     with open("passwords.txt","r") as p:
         data = []
         for line in p.readlines():
-            # l = []
             line = line.strip()
             line = line.split(",")
             line[1] = fer.decrypt(line[1].encode())
@@ -295,8 +279,7 @@ def export_csv():
         print("Export successful".center(width))
     except:
         print("Export uncsuccessful- Check if file with the same name and directory is open or being used by another service".center(width))    
-       
-                                 
+                                
 logo = (
 "██████╗░░█████╗░░██████╗░██████╗░██╗░░░░░░░██╗░█████╗░██████╗░██████╗░\n"+
 "██╔══██╗██╔══██╗██╔════╝██╔════╝░██║░░██╗░░██║██╔══██╗██╔══██╗██╔══██╗\n"+
@@ -315,7 +298,7 @@ logo = (
 wrappedtext = textwrap.wrap(logo)
 for line in wrappedtext:
     print(line.center(width))
-# export_csv()   
+
 while True:
     with open("key.txt","rb") as e:
         key = e.read()
@@ -333,7 +316,6 @@ while True:
     
 options = ["1","2","3","4","5","6","7","8","9"]
 while True:
-
     t1 = "1.Edit master password"
     t2 = "2.view       6.sort"
     t3 = "3.add        7.search"

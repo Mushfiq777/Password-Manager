@@ -325,7 +325,32 @@ logo = (
 wrappedtext = textwrap.wrap(logo)
 for line in wrappedtext:
     print(line.center(width))
-
+    
+with open("key.txt","rb") as e:
+        key = e.read()
+        fer = Fernet(key)    
+if os.stat("master.txt").st_size == 0:
+    while True:
+        input1 = input("Set master password: ".center(width).rstrip())
+        input2 = input("Re-confirm master password: ".center(width).rstrip())
+        if input1==input2:
+            print("Password matched!".center(width))
+            break
+        else:
+            print("Passwords did not match please try again".center(width))
+    while True:
+        sure = input("Are you sure you want to set this as the master password?(y/n): ".center(width).rstrip()).lower()
+        if sure=="y":
+            input1 = fer.encrypt(input1.encode()) 
+            with open("master.txt","wb") as m:
+                m.write(input1)
+                print("Master password set successfully!".center(width))
+                break
+        elif sure=="n":    
+            print("Master password was not set. Please set master password to continue".center(width))
+            
+        else:
+            print("Invalid Input Please Try Again".center(width))        
 while True:
     with open("key.txt","rb") as e:
         key = e.read()
